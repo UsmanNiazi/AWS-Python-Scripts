@@ -13,7 +13,7 @@ class StackName(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        hw_lambda=self.createfunc("MyLambda","./resources","hw_lambda.LambdaHandler")
+        hw_lambda=self.createfunc("MyLambda","./resources","apiLambda.LambdaHandler")
                
         
     def createfunc(self,id_,path,handler):
