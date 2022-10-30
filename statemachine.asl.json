@@ -1,0 +1,16 @@
+{
+    "Comment": "My First StaeMachine",
+    "StartAt": "Wait for timer",
+    "States": {
+        "Wait for timer": {
+            "Type": "Wait",
+            "SecondsPath": "$.timer_seconds",
+            "Next": "Success"
+        },
+        "Success": {
+            "Type": "Succeed"
+        }
+    }
+}
+
+

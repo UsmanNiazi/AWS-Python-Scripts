@@ -1,0 +1,30 @@
+{
+    "Comment": "commnent",
+    "StartAt": "Wait State",
+    "States": 
+    {
+        "Wait State":{
+            "Type": "Wait",
+            "SecondsPath": "$.timer_seconds",
+            "Next": "Send Msg"
+            },
+        "Send Msg":
+            {
+                "Type": "Task",
+                "Resource": "arn:aws:states:::sns:publish",
+                "Parameters": {
+                    "TopicArn": "arn:aws:states:::sns:publish",
+                    "Message": "Hello Step Function"
+                },
+                "End": true
+                
+            }
+                    
+    }
+}
+
+//Requets Response Technique
+// Step Fn doesn't wait for Task to Finish 
+
+
+
