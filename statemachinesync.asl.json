@@ -1,0 +1,50 @@
+{
+    "Comment": "An example of the Amazon States Language for notification on an AWS Batch job completion",
+    "StartAt": "Submit Batch Job",
+    "TimeoutSeconds": 3600,
+    "States": {
+      "Submit Batch Job": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::batch:submitJob.sync",
+        "Parameters": {
+          "JobName": "BatchJobNotification",
+          "JobQueue": "arn:aws:batch:ap-southeast-1:748941532207:job-queue/BatchJobQueue-BrffGTuMPpb9fNYz",
+          "JobDefinition": "arn:aws:batch:ap-southeast-1:748941532207:job-definition/BatchJobDefinition-7b9271d58010e5c:1"
+        },
+        "Next": "Notify Success",
+        "Retry": [
+            {
+              "ErrorEquals": [ "States.ALL" ],
+              "IntervalSeconds": 30,
+              "MaxAttempts": 2,
+              "BackoffRate": 1.5
+            }
+        ],
+        "Catch": [
+            {
+              "ErrorEquals": [ "States.ALL" ],
+              "Next": "Notify Failure"
+            }
+        ]
+      },
+      "Notify Success": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::sns:publish",
+        "Parameters": {
+          "Message": "Batch job submitted through Step Functions succeeded",
+          "TopicArn": "arn:aws:sns:ap-southeast-1:748941532207:sync-SNSTopic-fx4KV74sgP4K"
+        },
+        "End": true
+      },
+      "Notify Failure": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::sns:publish",
+        "Parameters": {
+          "Message": "Batch job submitted through Step Functions failed",
+          "TopicArn": "arn:aws:sns:ap-southeast-1:748941532207:sync-SNSTopic-fx4KV74sgP4K"
+        },
+        "End": true
+      }
+    }
+  }
+
